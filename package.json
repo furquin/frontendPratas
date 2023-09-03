@@ -13,7 +13,9 @@
     "axios": "^1.4.0",
     "core-js": "^3.8.3",
     "quasar": "^2.0.0",
-    "vue": "^3.2.13"
+    "vue": "^3.2.13",
+    "vue-route": "^1.5.1",
+    "vue-router": "^4.2.4"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.4.0",
