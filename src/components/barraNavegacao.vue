@@ -5,10 +5,10 @@
         :width="250"
         :breakpoint="500"
         bordered
-        class="bg-grey-5"
+        class="bg-primary"
       >
-          <q-list padding class="header">
-            <q-item clickable to="checkout" >
+          <q-list padding>
+            <q-item clickable exact-active-class="text-secondary" to="checkout" >
               <q-item-section avatar>
                 <q-icon name="shopping_cart" />
               </q-item-section>
@@ -17,7 +17,7 @@
               </q-item-section>
             </q-item>
 
-            <q-item clickable v-ripple to="relatorio">
+            <q-item clickable exact-active-class="text-secondary" to="relatorio">
               <q-item-section avatar>
                 <q-icon name="analytics" />
               </q-item-section>
@@ -26,7 +26,7 @@
               </q-item-section>
             </q-item>
 
-            <q-item clickable v-ripple to="produtos">
+            <q-item clickable exact-active-class="text-secondary" to="produtos">
               <q-item-section avatar>
                 <q-icon name="view_list" />
               </q-item-section>
