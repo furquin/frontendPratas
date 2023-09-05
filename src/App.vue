@@ -1,6 +1,6 @@
 <template>
   
-  <main class="columns is-gapless is-multiline">
+  <main class="fullscreen">
       <router-view />
   </main>
 </template>

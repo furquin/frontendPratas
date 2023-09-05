@@ -1,6 +1,6 @@
 <template>
   <main
-    class="is-flex is-flex-direction-column is-justify-content-center is-align-items-center column is-one-third"
+    class="fullscreen is-one-third row column justify-center items-center bg-primary"
   >
     <section>
       <form @submit.prevent="entrar">
@@ -26,7 +26,7 @@
           />
         </div>
         <div class="has-text-centered mt-5">
-          <button class="button is-primary">Entrar</button>
+          <button class="button bg-grey-8 text-white">Entrar</button>
         </div>
       </form>
     </section>
@@ -63,11 +63,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-main {
-  background-color: rgb(70, 98, 200);
-  width: 100%;
-  height: 100vh;
-}
 section {
   width: 90%;
 }
