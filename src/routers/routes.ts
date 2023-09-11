@@ -8,17 +8,17 @@ const routes: RouteRecordRaw[] = [
         children: [
             {
                 path: 'produtos',
-                component: () => import('../components/produtos.vue'),
+                component: () => import('../components/produtos/produtos.vue'),
                 name: 'produtos'
             },
             {
                 path: 'relatorio',
-                component: () => import('../components/produtos.vue'),
+                component: () => import('../components/produtos/produtos.vue'),
                 name: 'relatorio'
             },
             {
                 path: 'checkout',
-                component: () => import('../components/produtos.vue'),
+                component: () => import('../components/produtos/produtos.vue'),
                 name: 'checkout'
             }
         ]
@@ -27,13 +27,6 @@ const routes: RouteRecordRaw[] = [
         path: '/login',
         component: () => import('../components/barraLogin.vue'),
         name: 'login',
-        children: [
-            {
-                path: 'cadastro',
-                component: () => import('../components/produtos.vue'),
-                name: 'cadastro'
-            }
-        ]
     }
     // {
     //     path: '/:catchAll(.*)*',

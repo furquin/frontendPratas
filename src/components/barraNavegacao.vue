@@ -36,7 +36,7 @@
             </q-item>
           </q-list>
       </q-drawer>
-      <q-page-container class="ml-5">
+      <q-page-container>
         <router-view />
       </q-page-container>
     </q-layout>
