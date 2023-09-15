@@ -20,17 +20,19 @@
           style="width: 40%"
           label="ID, nome, descrição ou código"
         >
-      </q-input>
-      <q-btn icon="search_none" @click="filterProducts" color="info"> Buscar </q-btn>
+        </q-input>
+        <q-btn icon="search_none" @click="filterProducts" color="info">
+          Buscar
+        </q-btn>
         <q-space />
         <q-btn color="info" label="Adicionar novo" @click="addRow" />
       </template>
       <template v-slot:body-cell-actions="props">
         <q-tr :props="props">
           <q-td :props="props">
-            <q-btn color="info" icon="edit" />
+            <q-btn @click="editRow" color="info" icon="edit" />
           </q-td>
-          <q-td :props="props">
+          <q-td :props="props" @click="deletarProduto">
             <q-btn color="negative" icon="delete" />
           </q-td>
         </q-tr>
@@ -42,6 +44,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import DialogAdicionarProduto from "./dialogs/adicionarProduto.dialog.vue";
 import DialogEditarProduto from "./dialogs/editarProduto.dialog.vue";
 export default defineComponent({
   name: "Produtos-componente",
@@ -115,9 +118,27 @@ export default defineComponent({
   },
   methods: {
     addRow() {
-      console.log(this.$q);
+      this.$q.dialog({
+        component: DialogAdicionarProduto,
+      });
+    },
+    editRow() {
       this.$q.dialog({
         component: DialogEditarProduto,
+      });
+    },
+    deletarProduto() {
+      this.$q.dialog({
+        title: "Está é uma ação irreversível!",
+        message: "Tem certeza que deseja deletar este produto?",
+        cancel: {
+          label: "Cancelar",
+          color: "info",
+        },
+        ok: {
+          label: "Deletar",
+          color: "negative",
+        },
       });
     },
     filterProducts() {
