@@ -18,7 +18,7 @@ const routes: RouteRecordRaw[] = [
             },
             {
                 path: 'checkout',
-                component: () => import('../components/produtos/produtos.vue'),
+                component: () => import('../components/produtos/checkout.vue'),
                 name: 'checkout'
             }
         ]

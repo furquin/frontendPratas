@@ -32,7 +32,7 @@ import { QDialog } from "quasar";
 import axiosRequest from "@/resource/axios";
 import { IProduto } from "../interfaces/produto.interface";
 export default defineComponent({
-  name: "DialogAdicionarProduto-componente",
+  name: "DialogDeletarProduto-componente",
   props: {
     produto: {
       type: Object as () => IProduto,
