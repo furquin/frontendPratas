@@ -17,14 +17,14 @@
               </q-item-section>
             </q-item>
 
-            <q-item clickable exact-active-class="text-secondary" to="relatorio">
+            <!-- <q-item clickable exact-active-class="text-secondary" to="relatorio">
               <q-item-section avatar>
                 <q-icon name="analytics" />
               </q-item-section>
               <q-item-section>
                 Relatórios
               </q-item-section>
-            </q-item>
+            </q-item> -->
 
             <q-item clickable exact-active-class="text-secondary" to="produtos">
               <q-item-section avatar>

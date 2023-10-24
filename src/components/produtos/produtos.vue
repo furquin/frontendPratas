@@ -21,9 +21,9 @@
           label="ID, nome, descrição ou código"
         >
         </q-input>
-        <q-btn icon="search_none" @click="filterProducts" color="info">
+        <!-- <q-btn icon="search_none" @click="filterProducts" color="info">
           Buscar
-        </q-btn>
+        </q-btn> -->
         <q-space />
         <q-btn color="info" label="Adicionar novo" @click="addRow" />
       </template>
@@ -32,7 +32,7 @@
           <q-td :props="props">
             <q-btn @click="editRow" color="info" icon="edit" />
           </q-td>
-          <q-td :props="props" @click="deletarProduto">
+          <q-td :props="props" @click="deletarProduto(props.row)">
             <q-btn color="negative" icon="delete" />
           </q-td>
         </q-tr>
@@ -46,6 +46,9 @@
 import { defineComponent } from "vue";
 import DialogAdicionarProduto from "./dialogs/adicionarProduto.dialog.vue";
 import DialogEditarProduto from "./dialogs/editarProduto.dialog.vue";
+import DialogDeletarProduto from "./dialogs/deleteProduto.dialog.vue";
+import axiosRequest from "@/resource/axios";
+import { IProduto } from "./interfaces/produto.interface";
 export default defineComponent({
   name: "Produtos-componente",
   components: {},
@@ -90,66 +93,78 @@ export default defineComponent({
           field: "barCode",
           style: "width: 15%",
         },
-      ],
-      produtos: [
         {
-          name: "Produto 1",
-          description: "Descrição do produto 1",
-          price: "R$ 10,00",
-          quantity: "10",
-          barCode: "123456789",
-        },
-        {
-          name: "Produto 2",
-          description: "Descrição do produto 2",
-          price: "R$ 20,00",
-          quantity: "20",
-          barCode: "123456789",
-        },
-        {
-          name: "Produto 3",
-          description: "Descrição do produto 3",
-          price: "R$ 30,00",
-          quantity: "30",
-          barCode: "123456789",
+          name: "size",
+          label: "Tamanho",
+          field: "size",
+          style: "width: 5%",
         },
       ],
+      produtos: [],
     };
   },
   methods: {
     addRow() {
-      this.$q.dialog({
-        component: DialogAdicionarProduto,
-      });
+      this.$q
+        .dialog({
+          component: DialogAdicionarProduto,
+        })
+        .onOk(() => {
+          this.$q.notify({
+            color: "positive",
+            message: "Produto adicionado com sucesso!",
+          });
+        })
+        .onCancel(() => {         
+          window.location.reload();
+        })
     },
     editRow() {
-      this.$q.dialog({
-        component: DialogEditarProduto,
-      });
+      this.$q
+        .dialog({
+          component: DialogEditarProduto,
+          componentProps: {
+            produto: this.produtos,
+          },
+        })
+        .onOk(() => {
+          this.$q.notify({
+            color: "positive",
+            message: "Produto editado com sucesso!",
+          });
+        });
     },
-    deletarProduto() {
-      this.$q.dialog({
-        title: "Está é uma ação irreversível!",
-        message: "Tem certeza que deseja deletar este produto?",
-        cancel: {
-          label: "Cancelar",
-          color: "info",
-        },
-        ok: {
-          label: "Deletar",
-          color: "negative",
-        },
-      });
+    deletarProduto(row: IProduto) {
+      this.$q
+        .dialog({
+          component: DialogDeletarProduto,
+          componentProps: {
+            produto: row,
+          },
+        })
+        .onOk(() => {
+          this.$q.notify({
+            color: "negative",
+            message: "Produto deletado com sucesso!",
+          });
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        })
     },
-    filterProducts() {
-      this.produtos = this.produtos.filter((produto) => {
-        return (
-          produto.name.includes(this.filter) ||
-          produto.description.includes(this.filter) ||
-          produto.barCode.includes(this.filter)
-        );
-      });
-    },
+    // filterProducts() {
+    //   this.produtos = this.produtos.filter((produto) => {
+    //     return (
+    //       produto.name.includes(this.filter) ||
+    //       produto.description.includes(this.filter) ||
+    //       produto.barCode.includes(this.filter)
+    //     );
+    //   });
+    // },
+  },
+  async created() {
+    const response = await axiosRequest.get("/products");
+    this.produtos = response.data;
   },
 });
 </script>
