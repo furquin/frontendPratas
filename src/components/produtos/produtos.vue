@@ -30,7 +30,7 @@
       <template v-slot:body-cell-actions="props">
         <q-tr :props="props">
           <q-td :props="props">
-            <q-btn @click="editRow" color="info" icon="edit" />
+            <q-btn @click="editRow(props.row)" color="info" icon="edit" />
           </q-td>
           <q-td :props="props" @click="deletarProduto(props.row)">
             <q-btn color="negative" icon="delete" />
@@ -119,12 +119,12 @@ export default defineComponent({
           window.location.reload();
         })
     },
-    editRow() {
+    editRow(row: IProduto) {
       this.$q
         .dialog({
           component: DialogEditarProduto,
           componentProps: {
-            produto: this.produtos,
+            produto: row,
           },
         })
         .onOk(() => {
@@ -132,6 +132,9 @@ export default defineComponent({
             color: "positive",
             message: "Produto editado com sucesso!",
           });
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
         });
     },
     deletarProduto(row: IProduto) {
