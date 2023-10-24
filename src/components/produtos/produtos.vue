@@ -18,12 +18,12 @@
           dense
           v-model="filter"
           style="width: 40%"
-          label="ID, nome, descrição ou código"
+          label="Nome, descrição ou código"
         >
         </q-input>
-        <!-- <q-btn icon="search_none" @click="filterProducts" color="info">
+        <q-btn icon="search_none" @click="filterProducts(filter)" color="info">
           Buscar
-        </q-btn> -->
+        </q-btn>
         <q-space />
         <q-btn color="info" label="Adicionar novo" @click="addRow" />
       </template>
@@ -109,15 +109,9 @@ export default defineComponent({
         .dialog({
           component: DialogAdicionarProduto,
         })
-        .onOk(() => {
-          this.$q.notify({
-            color: "positive",
-            message: "Produto adicionado com sucesso!",
-          });
-        })
-        .onCancel(() => {         
+        .onCancel(() => {
           window.location.reload();
-        })
+        });
     },
     editRow(row: IProduto) {
       this.$q
@@ -127,15 +121,6 @@ export default defineComponent({
             produto: row,
           },
         })
-        .onOk(() => {
-          this.$q.notify({
-            color: "positive",
-            message: "Produto editado com sucesso!",
-          });
-          setTimeout(() => {
-            window.location.reload();
-          }, 1000);
-        });
     },
     deletarProduto(row: IProduto) {
       this.$q
@@ -145,29 +130,33 @@ export default defineComponent({
             produto: row,
           },
         })
-        .onOk(() => {
+    },
+    async filterProducts(input: string) {
+      await axiosRequest
+        .get(`/products?filter=${input}`)
+        .then((response) => {
+          this.produtos = response.data;
+          this.filter = "";
+        })
+        .catch((error) => {
           this.$q.notify({
             color: "negative",
-            message: "Produto deletado com sucesso!",
+            message: `Erro ao buscar produtos! ${error.response.data.message}`,
           });
-          setTimeout(() => {
-            window.location.reload();
-          }, 1000);
-        })
+        });
     },
-    // filterProducts() {
-    //   this.produtos = this.produtos.filter((produto) => {
-    //     return (
-    //       produto.name.includes(this.filter) ||
-    //       produto.description.includes(this.filter) ||
-    //       produto.barCode.includes(this.filter)
-    //     );
-    //   });
-    // },
   },
   async created() {
-    const response = await axiosRequest.get("/products");
-    this.produtos = response.data;
+    await axiosRequest.get("/products?filter")
+    .then((response) => {
+      this.produtos = response.data;
+    })
+    .catch((error) => {
+      this.$q.notify({
+        color: "negative",
+        message: `Erro ao buscar produtos! ${error.response.data.message}`,
+      });
+    });
   },
 });
 </script>

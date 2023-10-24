@@ -21,16 +21,17 @@
       >
       </q-input>
       <q-input
-        type="number"
         color="info"
         filled
-        v-model.number="price"
+        v-model.decimal="price"
         label="Preço"
+        mask="#.##"
+        fill-mask="0"
+        reverse-fill-mask
         class="q-mb-md q-pa-md"
       >
       </q-input>
       <q-input
-        type="number"
         color="info"
         filled
         v-model.number="quantity"
@@ -47,12 +48,7 @@
       >
       </q-input>
       <q-card-actions class="row justify-around">
-        <q-btn
-          flat
-          label="Cancelar"
-          @click="cancel"
-          color="negative"
-        ></q-btn>
+        <q-btn flat label="Cancelar" @click="cancel" color="negative"></q-btn>
         <q-btn
           flat
           label="Adicionar"
@@ -74,7 +70,7 @@ export default defineComponent({
     return {
       name: "",
       description: "",
-      price: 0,
+      price: 0.00,
       quantity: 0,
       barCode: "",
     };
@@ -89,18 +85,23 @@ export default defineComponent({
           quantity: this.quantity,
           barCode: this.barCode,
         })
+        .then(() => {
+          this.$q.notify({
+            color: "positive",
+            message: "Produto adicionado com sucesso!",
+          });
+          this.name = "";
+          this.description = "";
+          this.price = 0;
+          this.quantity = 0;
+          this.barCode = "";
+        })
         .catch((error) => {
           this.$q.notify({
             color: "negative",
             message: `Não foi possível adicionar o produto, ${error.response.data.message} `,
           });
         });
-      this.$emit("ok");
-      this.name = "";
-      this.description = "";
-      this.price = 0;
-      this.quantity = 0;
-      this.barCode = "";
     },
 
     cancel() {

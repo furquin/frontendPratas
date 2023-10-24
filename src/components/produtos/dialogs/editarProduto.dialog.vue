@@ -80,14 +80,30 @@ export default defineComponent({
   },
   methods: {
     async update() {
-      await axiosRequest.patch(`/products/${this.produto.id}`, {
-        name: this.name,
-        description: this.description,
-        price: this.price,
-        quantity: this.quantity,
-        barCode: this.barCode,
-      });
-      this.$emit("ok");
+      await axiosRequest
+        .patch(`/products/${this.produto.id}`, {
+          name: this.name,
+          description: this.description,
+          price: this.price,
+          quantity: this.quantity,
+          barCode: this.barCode,
+        })
+        .then(() => {
+          this.$q.notify({
+            color: "positive",
+            message: "Produto editado com sucesso!",
+          });
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        })
+        .catch((error) => {
+          this.$q.notify({
+            color: "negative",
+            message: `Erro ao editar produto! ${error.response.data.message}`,
+            icon: "report_problem",
+          });
+        });
     },
   },
 
@@ -97,7 +113,7 @@ export default defineComponent({
       .catch((error) => {
         console.log(error);
       });
-    if(!response) return;
+    if (!response) return;
     this.name = response.data.name;
     this.description = response.data.description;
     this.price = response.data.price;
