@@ -5,7 +5,7 @@
 				<h5 class="text-black">Adicionar ao carrinho</h5>
 			</q-card-section>
 			<q-card-section class="row justify-center">
-				<div class="text-positive">Deseja adicionar o produto {{ this.produto.name }} ao carrinho?</div>
+				<div class="text-positive">Deseja adicionar o produto {{ produto.name }} ao carrinho?</div>
 			</q-card-section>
 			<q-card-section>
 				<q-input color="info" filled v-model.number="quantity" label="Quantidade" class="q-mb-md q-pa-md"> </q-input>
