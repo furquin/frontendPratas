@@ -11,17 +11,18 @@ export const useAuthStore = defineStore('auth', () => {
 	const role = ref<Role | string>('')
 
 	async function login(email: string, password: string) {
-		const { status, data } = await axiosRequest.post('/auth/login', {
-			email,
-			password,
-		})
-
-		if (status !== 200) {
-			HttpException(data)
-			return false
-		}
-
-		localStorage.setItem('pratas:token', data.token)
+		await axiosRequest
+			.post('/login', {
+				email,
+				password,
+			})
+			.then((response) => {
+				localStorage.setItem('pratas:token', response.data.login.token)
+				localStorage.setItem('pratas:user', response.data.user)
+			})
+			.catch((error) => {
+				HttpException(error)
+			})
 
 		return validateToken()
 	}
@@ -32,19 +33,6 @@ export const useAuthStore = defineStore('auth', () => {
 		if (!token) {
 			return false
 		}
-
-		const { status, data } = await axiosRequest.get('/me')
-
-		if (status !== 200) {
-			HttpException(data)
-			return false
-		}
-
-		user.value = data.user
-		role.value = data.roles
-
-		localStorage.setItem('pratas:user', JSON.stringify(data.user))
-		localStorage.setItem('pratas:roles', JSON.stringify(data.roles))
 
 		return true
 	}

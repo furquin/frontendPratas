@@ -12,31 +12,31 @@ const routes: RouteRecordRaw[] = [
 		children: [
 			{
 				path: 'produtos',
-				component: () => import('../components/produtos/produtos.vue'),
+				component: () => import('../pages/produtos/produtos.vue'),
 				name: 'produtos',
 			},
-			{
-				path: 'relatorio',
-				component: () => import('../components/produtos/produtos.vue'),
-				name: 'relatorio',
-			},
+			// {
+			// 	path: 'relatorio',
+			// 	component: () => import('../pages/produtos/produtos.vue'),
+			// 	name: 'relatorio',
+			// },
 			{
 				path: 'checkout',
-				component: () => import('../components/produtos/checkout.vue'),
+				component: () => import('../pages/produtos/checkout.vue'),
 				name: 'checkout',
 			},
 		],
 	},
 	{
 		path: '/login',
-		component: () => import('../components/barraLogin.vue'),
+		component: () => import('../pages/login/barraLogin.vue'),
 		name: 'login',
 	},
-	// {
-	//     path: '/:catchAll(.*)*',
-	//     component: () => import('../components/404.vue'),
-	//     name: '404'
-	// }
+	{
+		path: '/:catchAll(.*)*',
+		component: () => import('../pages/notFound/notFound.vue'),
+		name: '404',
+	},
 ]
 
 export default routes

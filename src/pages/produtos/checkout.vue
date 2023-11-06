@@ -32,8 +32,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import axiosRequest from '@/resource/axios'
-import { IProduto } from './interfaces/produto.interface'
-import DialogAddCarrinho from './dialogs/addCarrinho.dialog.vue'
+import { IProduto } from '@/components/produtos/interfaces/produto.interface'
+import DialogAddCarrinho from '@/components/produtos/dialogs/addCarrinho.dialog.vue'
 import { HttpException } from '@/utils/http-exception'
 
 export default defineComponent({

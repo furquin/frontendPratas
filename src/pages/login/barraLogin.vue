@@ -21,8 +21,9 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import axiosRequest from '@/resource/axios'
-import { HttpException } from '@/utils/http-exception'
+import { useAuthStore } from '@/store/auth.store'
+
+const $authStore = useAuthStore()
 
 export default defineComponent({
 	name: 'Barra-login-componente',
@@ -35,14 +36,9 @@ export default defineComponent({
 	},
 	methods: {
 		async entrar() {
-			const { data, ...request } = await axiosRequest.post('/login', {
-				email: this.email,
-				password: this.senha,
-			})
-			if (request.status === 200) {
-				localStorage.setItem('pratas:token', data.token)
-			} else {
-				HttpException(request)
+			const success = await $authStore.login(this.email, this.senha)
+			if (success) {
+				this.$router.push({ name: 'home' })
 			}
 		},
 	},

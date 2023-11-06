@@ -36,11 +36,11 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import DialogAdicionarProduto from './dialogs/adicionarProduto.dialog.vue'
-import DialogEditarProduto from './dialogs/editarProduto.dialog.vue'
-import DialogDeletarProduto from './dialogs/deleteProduto.dialog.vue'
+import DialogAdicionarProduto from '@/components/produtos/dialogs/adicionarProduto.dialog.vue'
+import DialogEditarProduto from '@/components/produtos/dialogs/editarProduto.dialog.vue'
+import DialogDeletarProduto from '@/components/produtos/dialogs/deleteProduto.dialog.vue'
 import axiosRequest from '@/resource/axios'
-import { IProduto } from './interfaces/produto.interface'
+import { IProduto } from '@/components/produtos/interfaces/produto.interface'
 import { HttpException } from '@/utils/http-exception'
 export default defineComponent({
 	name: 'Produtos-componente',

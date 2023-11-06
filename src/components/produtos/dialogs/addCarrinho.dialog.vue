@@ -20,7 +20,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { QDialog } from 'quasar'
-import { IProduto } from '../interfaces/produto.interface'
+import { IProduto } from '@/components/produtos/interfaces/produto.interface'
 export default defineComponent({
 	name: 'DialogAdicionarProdutoCarrinho-componente',
 	data() {
