@@ -19,6 +19,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import axiosRequest from '@/resource/axios'
+import { HttpException } from '@/utils/http-exception'
 export default defineComponent({
 	name: 'DialogEditarProduto-componente',
 	components: {},
@@ -57,18 +58,14 @@ export default defineComponent({
 					}, 1000)
 				})
 				.catch((error) => {
-					this.$q.notify({
-						color: 'negative',
-						message: `Erro ao editar produto! ${error.response.data.message}`,
-						icon: 'report_problem',
-					})
+					HttpException(error)
 				})
 		},
 	},
 
 	async created() {
 		const response = await axiosRequest.get(`/products/${this.produto.id}`).catch((error) => {
-			console.log(error)
+			HttpException(error)
 		})
 		if (!response) return
 		this.name = response.data.name

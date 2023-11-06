@@ -30,6 +30,7 @@
 import { defineComponent } from 'vue'
 import { QDialog } from 'quasar'
 import axiosRequest from '@/resource/axios'
+import { HttpException } from '@/utils/http-exception'
 export default defineComponent({
 	name: 'DialogAdicionarProduto-componente',
 	components: {},
@@ -64,10 +65,7 @@ export default defineComponent({
 					this.barCode = ''
 				})
 				.catch((error) => {
-					this.$q.notify({
-						color: 'negative',
-						message: `Não foi possível adicionar o produto, ${error.response.data.message} `,
-					})
+					HttpException(error)
 				})
 		},
 

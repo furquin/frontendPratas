@@ -19,6 +19,7 @@ import { defineComponent } from 'vue'
 import { QDialog } from 'quasar'
 import axiosRequest from '@/resource/axios'
 import { IProduto } from '../interfaces/produto.interface'
+import { HttpException } from '@/utils/http-exception'
 export default defineComponent({
 	name: 'DialogDeletarProduto-componente',
 	props: {
@@ -41,10 +42,7 @@ export default defineComponent({
 					}, 500)
 				})
 				.catch((error) => {
-					this.$q.notify({
-						color: 'negative',
-						message: `Não foi possível deletar o produto, ${error.response.data.message} `,
-					})
+					HttpException(error)
 				})
 		},
 

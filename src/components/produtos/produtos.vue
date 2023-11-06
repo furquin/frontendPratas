@@ -41,6 +41,7 @@ import DialogEditarProduto from './dialogs/editarProduto.dialog.vue'
 import DialogDeletarProduto from './dialogs/deleteProduto.dialog.vue'
 import axiosRequest from '@/resource/axios'
 import { IProduto } from './interfaces/produto.interface'
+import { HttpException } from '@/utils/http-exception'
 export default defineComponent({
 	name: 'Produtos-componente',
 	components: {},
@@ -129,10 +130,7 @@ export default defineComponent({
 					this.filter = ''
 				})
 				.catch((error) => {
-					this.$q.notify({
-						color: 'negative',
-						message: `Erro ao buscar produtos! ${error.response.data.message}`,
-					})
+					HttpException(error)
 				})
 		},
 	},
@@ -142,12 +140,7 @@ export default defineComponent({
 			.then((response) => {
 				this.produtos = response.data
 			})
-			.catch((error) => {
-				this.$q.notify({
-					color: 'negative',
-					message: `Erro ao buscar produtos! ${error.response.data.message}`,
-				})
-			})
+			.catch((error) => HttpException(error))
 	},
 })
 </script>

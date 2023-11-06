@@ -22,6 +22,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import axiosRequest from '@/resource/axios'
+import { HttpException } from '@/utils/http-exception'
 
 export default defineComponent({
 	name: 'Barra-login-componente',
@@ -39,9 +40,9 @@ export default defineComponent({
 				password: this.senha,
 			})
 			if (request.status === 200) {
-				localStorage.setItem('token', data.token)
+				localStorage.setItem('pratas:token', data.token)
 			} else {
-				alert('Email ou senha incorretos')
+				HttpException(request)
 			}
 		},
 	},

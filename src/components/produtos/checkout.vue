@@ -34,6 +34,7 @@ import { defineComponent } from 'vue'
 import axiosRequest from '@/resource/axios'
 import { IProduto } from './interfaces/produto.interface'
 import DialogAddCarrinho from './dialogs/addCarrinho.dialog.vue'
+import { HttpException } from '@/utils/http-exception'
 
 export default defineComponent({
 	name: 'Checkout-component',
@@ -98,10 +99,7 @@ export default defineComponent({
 					this.filter = ''
 				})
 				.catch((error) => {
-					this.$q.notify({
-						color: 'negative',
-						message: `Erro ao buscar produtos! ${error.response.data.message}`,
-					})
+					HttpException(error)
 				})
 		},
 
@@ -128,10 +126,7 @@ export default defineComponent({
 				this.produtos = response.data
 			})
 			.catch((error) => {
-				this.$q.notify({
-					color: 'negative',
-					message: `Erro ao buscar produtos! ${error.response.data.message}`,
-				})
+				HttpException(error)
 			})
 	},
 })
