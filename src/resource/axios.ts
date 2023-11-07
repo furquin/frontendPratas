@@ -12,14 +12,4 @@ axiosRequest.interceptors.request.use(async (request) => {
 	return request
 })
 
-axiosRequest.interceptors.response.use((response) => {
-	if (response.status === 403) {
-		setTimeout(() => {
-			localStorage.removeItem('pratas:token')
-			window.location.href = '/login'
-		}, 100)
-	}
-	return response
-})
-
 export default axiosRequest

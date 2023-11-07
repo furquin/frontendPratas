@@ -2,13 +2,12 @@ import { defineStore } from 'pinia'
 
 import { HttpException } from '@/utils/http-exception'
 
-import { Role, User } from '@/types'
+import { User } from '@/types'
 import { ref } from 'vue'
 import axiosRequest from '@/resource/axios'
 
 export const useAuthStore = defineStore('auth', () => {
 	const user = ref<User | null>(null)
-	const role = ref<Role | string>('')
 
 	async function login(email: string, password: string) {
 		await axiosRequest
@@ -17,8 +16,10 @@ export const useAuthStore = defineStore('auth', () => {
 				password,
 			})
 			.then((response) => {
-				localStorage.setItem('pratas:token', response.data.login.token)
-				localStorage.setItem('pratas:user', response.data.user)
+				const { login, user } = response.data
+
+				localStorage.setItem('pratas:token', login.token)
+				localStorage.setItem('pratas:user', JSON.stringify(user))
 			})
 			.catch((error) => {
 				HttpException(error)
@@ -40,15 +41,12 @@ export const useAuthStore = defineStore('auth', () => {
 	function logout() {
 		localStorage.removeItem('pratas:token')
 		localStorage.removeItem('pratas:user')
-		localStorage.removeItem('pratas:roles')
 
 		user.value = null
-		role.value = ''
 	}
 
 	return {
 		user,
-		role: role,
 		login,
 		validateToken,
 		logout,

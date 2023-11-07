@@ -24,6 +24,13 @@
 					</q-item-section>
 					<q-item-section> Produtos </q-item-section>
 				</q-item>
+
+				<q-item class="fixed-bottom" @click="logout" clickable exact-active-class="text-secondary">
+					<q-item-section avatar>
+						<q-icon name="logout" />
+					</q-item-section>
+					<q-item-section> Logout </q-item-section>
+				</q-item>
 			</q-list>
 		</q-drawer>
 		<q-page-container>
@@ -34,6 +41,9 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { useAuthStore } from '@/store/auth.store'
+
+const $authStore = useAuthStore()
 
 export default defineComponent({
 	name: 'Barra-navegacao-componente',
@@ -41,7 +51,12 @@ export default defineComponent({
 	data() {
 		return {}
 	},
-	methods: {},
+	methods: {
+		logout() {
+			$authStore.logout()
+			this.$router.push({ name: 'login' })
+		},
+	},
 })
 </script>
 

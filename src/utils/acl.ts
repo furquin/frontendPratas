@@ -2,12 +2,11 @@ import { useAuthStore } from '@/store/auth.store'
 
 class ACL {
 	public readonly permissions = {
-		'inicio.access': [],
 		'produto.access': ['admin_geral', 'admin'],
 	}
 
 	hasPermission(permission_name: keyof typeof this.permissions) {
-		const { user, role } = useAuthStore()
+		const { user } = useAuthStore()
 
 		if (!user) {
 			return false
@@ -24,10 +23,10 @@ class ACL {
 		}
 
 		const has = allowedRoles.some((slug) => {
-			if (typeof role === 'string') {
-				return role === slug
+			if (typeof user.role === 'string') {
+				return user.role === slug
 			}
-			return role.slug === slug
+			return user.role === slug
 		})
 
 		return has

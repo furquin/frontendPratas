@@ -3,11 +3,7 @@ export type User = {
 	name: string
 	email: string
 	active: boolean
-	role?: Role
+	role: Role
 }
 
-export type Role = {
-	id: number
-	name: string
-	slug: string
-}
+export type Role = string
