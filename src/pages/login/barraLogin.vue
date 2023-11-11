@@ -1,22 +1,29 @@
 <template>
-	<main class="fullscreen is-one-third row column justify-center items-center bg-primary">
-		<section>
-			<form @submit.prevent="entrar">
-				<div>
-					<label class="label">Email</label>
-					<input class="input" v-model="email" type="text" placeholder="nome@email.com" required />
-				</div>
+	<div class="fullscreen bg-primary">
+		<div class="fullscreen is-one-third row column justify-center items-center bg-white">
+			<section>
+				<form @submit.prevent="entrar">
+					<div>
+						<div class="text-weight-bold">Email</div>
+						<q-input v-model="email" type="text" placeholder="nome@email.com" required />
+					</div>
 
-				<div class="mt-5">
-					<label class="label">Senha</label>
-					<input class="input" v-model="senha" type="password" placeholder="Sua senha" required />
-				</div>
-				<div class="has-text-centered mt-5">
-					<button class="button bg-grey-8 text-white">Entrar</button>
-				</div>
-			</form>
-		</section>
-	</main>
+					<div class="mt-5">
+						<div class="text-weight-bold">Senha</div>
+						<q-input v-model="senha" type="password" placeholder="Sua senha" required />
+					</div>
+					<section class="row justify-around">
+						<div class="has-text-centered mt-5">
+							<button class="button bg-grey-8 text-white">Entrar</button>
+						</div>
+						<div class="has-text-centered mt-5">
+							<router-link to="/cadastro" class="button bg-grey-8 text-white"> Cadastre-se </router-link>
+						</div>
+					</section>
+				</form>
+			</section>
+		</div>
+	</div>
 </template>
 
 <script lang="ts">
