@@ -33,6 +33,11 @@ const routes: RouteRecordRaw[] = [
 		name: 'login',
 	},
 	{
+		path: '/cadastro',
+		component: () => import('../pages/login/cadastro/cadastro.vue'),
+		name: 'cadastro',
+	},
+	{
 		path: '/:catchAll(.*)*',
 		component: () => import('../pages/notFound/notFound.vue'),
 		name: '404',
