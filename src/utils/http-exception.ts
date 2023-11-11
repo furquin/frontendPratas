@@ -15,7 +15,7 @@ export function HttpException(data: any) {
 		})
 	} else {
 		Notify.create({
-			message: data.message || 'Erro desconhecido!',
+			message: data.response.data.message || 'Erro desconhecido!',
 			type: 'negative',
 			html: true,
 		})

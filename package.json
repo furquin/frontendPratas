@@ -13,13 +13,16 @@
     "@types/node": "^20.5.0",
     "axios": "^1.4.0",
     "core-js": "^3.8.3",
+    "dayjs": "^1.11.10",
     "pinia": "^2.1.7",
     "quasar": "^2.0.0",
+    "validator": "^13.11.0",
     "vue": "^3.2.13",
     "vue-route": "^1.5.1",
     "vue-router": "^4.2.4"
   },
   "devDependencies": {
+    "@types/validator": "^13.11.6",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
     "@vue/cli-plugin-babel": "~5.0.0",
