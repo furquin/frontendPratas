@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from 'axios'
 
 const axiosRequest: AxiosInstance = axios.create({
-	baseURL: 'https://api-pratas.onrender.com/',
+	baseURL: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://api-pratas.onrender.com/',
 })
 
 axiosRequest.interceptors.request.use(async (request) => {
