@@ -141,8 +141,6 @@ export default defineComponent({
 	methods: {
 		async onSubmit() {
 			submitting.value = true
-			console.log($authStore)
-
 			const success = await $authStore.register({
 				storeName: formData.value.storeName,
 				name: formData.value.name,
@@ -155,6 +153,12 @@ export default defineComponent({
 					name: 'home',
 				})
 			}
+
+			formData.value.storeName = ''
+			formData.value.name = ''
+			formData.value.email = ''
+			formData.value.password.value = ''
+			formData.value.passwordConfirmation.value = ''
 			submitting.value = false
 		},
 		validatePassword,
