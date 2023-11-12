@@ -6,7 +6,18 @@
 			</q-card-section>
 			<q-input color="info" filled v-model="name" label="Nome" class="q-mb-md q-pa-md"> </q-input>
 			<q-input color="info" filled v-model="description" label="descrição" class="q-mb-md q-pa-md"> </q-input>
-			<q-input color="info" filled v-model.number="price" label="Preço" class="q-mb-md q-pa-md"> </q-input>
+			<q-input
+				label="Preço"
+				color="info"
+				filled
+				v-model.decimal="price"
+				mask="#.##"
+				fill-mask="0"
+				:prefix="'R$'"
+				reverse-fill-mask
+				class="q-mb-md q-pa-md"
+			>
+			</q-input>
 			<q-input color="info" filled v-model.number="quantity" label="Quantidade" class="q-mb-md q-pa-md"> </q-input>
 			<q-input color="info" filled v-model="barCode" label="Código" class="q-mb-md q-pa-md"> </q-input>
 			<q-card-actions class="row justify-around">
@@ -67,7 +78,9 @@ export default defineComponent({
 		const response = await axiosRequest.get(`/products/${this.produto.id}`).catch((error) => {
 			HttpException(error)
 		})
+
 		if (!response) return
+		console.log(response.data)
 		this.name = response.data.name
 		this.description = response.data.description
 		this.price = response.data.price

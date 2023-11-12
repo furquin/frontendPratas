@@ -1,5 +1,5 @@
 <template>
-	<q-page padding class="row">
+	<q-page padding>
 		<q-table
 			title="Produtos"
 			flat

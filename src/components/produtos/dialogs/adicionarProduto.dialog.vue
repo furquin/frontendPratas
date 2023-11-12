@@ -13,6 +13,7 @@
 				label="Preço"
 				mask="#.##"
 				fill-mask="0"
+				:prefix="'R$'"
 				reverse-fill-mask
 				class="q-mb-md q-pa-md"
 			>
