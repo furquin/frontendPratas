@@ -47,7 +47,7 @@ export const useAuthStore = defineStore('auth', () => {
 
 	async function register(props: { storeName: string; name: string; email: string; password: string }) {
 		await axiosRequest
-			.post('/store', { roleId: 2, ...props })
+			.post('/register', { roleId: 2, ...props })
 			.then((response) => {
 				localStorage.setItem('pratas:token', response.data.login.token)
 				localStorage.setItem('pratas:user', JSON.stringify(response.data.user))
