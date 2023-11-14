@@ -29,8 +29,9 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
-import axiosRequest from '@/resource/axios'
-import { HttpException } from '@/utils/http-exception'
+import { useProdutoStore } from '@/store/produto.store'
+
+const $produtoStore = useProdutoStore()
 export default defineComponent({
 	name: 'DialogEditarProduto-componente',
 	components: {},
@@ -51,41 +52,30 @@ export default defineComponent({
 	},
 	methods: {
 		async update() {
-			await axiosRequest
-				.patch(`/products/${this.produto.id}`, {
-					name: this.name,
-					description: this.description,
-					price: this.price,
-					quantity: this.quantity,
-					barCode: this.barCode,
-				})
-				.then(() => {
-					this.$q.notify({
-						color: 'positive',
-						message: 'Produto editado com sucesso!',
-					})
-					setTimeout(() => {
-						window.location.reload()
-					}, 1000)
-				})
-				.catch((error) => {
-					HttpException(error)
-				})
+			await $produtoStore.updateProduto(this.produto.id, {
+				name: this.name,
+				description: this.description,
+				price: this.price,
+				quantity: this.quantity,
+				barCode: this.barCode,
+			})
+			this.$q.notify({
+				color: 'positive',
+				message: 'Produto editado com sucesso!',
+			})
 		},
 	},
 
 	async created() {
-		const response = await axiosRequest.get(`/products/${this.produto.id}`).catch((error) => {
-			HttpException(error)
-		})
+		await $produtoStore.getProduto(this.produto.id)
 
+		const response = $produtoStore.produto
 		if (!response) return
-		console.log(response.data)
-		this.name = response.data.name
-		this.description = response.data.description
-		this.price = response.data.price
-		this.quantity = response.data.quantity
-		this.barCode = response.data.barCode
+		this.name = response.name
+		this.description = response.description
+		this.price = response.price
+		this.quantity = response.quantity
+		this.barCode = response.barCode
 	},
 })
 </script>

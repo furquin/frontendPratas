@@ -14,7 +14,14 @@
 			<template v-slot:top>
 				<h5 class="q-mr-md">Produtos</h5>
 				<q-space />
-				<q-input dense v-model="filter" style="width: 40%" label="Nome, descrição ou código"> </q-input>
+				<q-input
+					dense
+					v-model="filter"
+					style="width: 40%"
+					@keyup.enter="filterProducts(filter)"
+					label="Nome, descrição ou código"
+				>
+				</q-input>
 				<q-btn icon="search_none" @click="filterProducts(filter)" color="info"> Buscar </q-btn>
 				<q-space />
 				<q-btn color="info" label="Adicionar novo" @click="addRow" />
@@ -39,9 +46,11 @@ import { defineComponent } from 'vue'
 import DialogAdicionarProduto from '@/components/produtos/dialogs/adicionarProduto.dialog.vue'
 import DialogEditarProduto from '@/components/produtos/dialogs/editarProduto.dialog.vue'
 import DialogDeletarProduto from '@/components/produtos/dialogs/deleteProduto.dialog.vue'
-import axiosRequest from '@/resource/axios'
-import { IProduto } from '@/components/produtos/interfaces/produto.interface'
-import { HttpException } from '@/utils/http-exception'
+import { useProdutoStore } from '@/store/produto.store'
+import { Produto } from '@/types'
+
+const $produtoStore = useProdutoStore()
+
 export default defineComponent({
 	name: 'Produtos-componente',
 	components: {},
@@ -93,7 +102,7 @@ export default defineComponent({
 					style: 'width: 5%',
 				},
 			],
-			produtos: [],
+			produtos: [] as Produto[],
 		}
 	},
 	methods: {
@@ -102,45 +111,45 @@ export default defineComponent({
 				.dialog({
 					component: DialogAdicionarProduto,
 				})
-				.onCancel(() => {
-					window.location.reload()
+				.onDismiss(async () => {
+					await $produtoStore.getProdutos()
+					this.produtos = $produtoStore.produtos
 				})
 		},
-		editRow(row: IProduto) {
-			this.$q.dialog({
-				component: DialogEditarProduto,
-				componentProps: {
-					produto: row,
-				},
-			})
+		editRow(row: Produto) {
+			this.$q
+				.dialog({
+					component: DialogEditarProduto,
+					componentProps: {
+						produto: row,
+					},
+				})
+				.onDismiss(async () => {
+					await $produtoStore.getProdutos()
+					this.produtos = $produtoStore.produtos
+				})
 		},
-		deletarProduto(row: IProduto) {
-			this.$q.dialog({
-				component: DialogDeletarProduto,
-				componentProps: {
-					produto: row,
-				},
-			})
+		deletarProduto(row: Produto) {
+			this.$q
+				.dialog({
+					component: DialogDeletarProduto,
+					componentProps: {
+						produto: row,
+					},
+				})
+				.onOk(async () => {
+					await $produtoStore.getProdutos()
+					this.produtos = $produtoStore.produtos
+				})
 		},
 		async filterProducts(input: string) {
-			await axiosRequest
-				.get(`/products?filter=${input}`)
-				.then((response) => {
-					this.produtos = response.data
-					this.filter = ''
-				})
-				.catch((error) => {
-					HttpException(error)
-				})
+			await $produtoStore.getProdutos(input)
+			this.produtos = $produtoStore.produtos
 		},
 	},
 	async created() {
-		await axiosRequest
-			.get('/products?filter')
-			.then((response) => {
-				this.produtos = response.data
-			})
-			.catch((error) => HttpException(error))
+		await $produtoStore.getProdutos()
+		this.produtos = $produtoStore.produtos
 	},
 })
 </script>

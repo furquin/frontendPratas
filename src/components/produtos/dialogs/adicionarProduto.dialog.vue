@@ -21,7 +21,7 @@
 			<q-input color="info" filled v-model.number="quantity" label="Quantidade" class="q-mb-md q-pa-md"> </q-input>
 			<q-input color="info" filled v-model="barCode" label="Código" class="q-mb-md q-pa-md"> </q-input>
 			<q-card-actions class="row justify-around">
-				<q-btn flat label="Cancelar" @click="cancel" color="negative"></q-btn>
+				<q-btn flat label="Cancelar" @click="hide" color="negative"></q-btn>
 				<q-btn flat label="Adicionar" color="info" @click="criarProduto"></q-btn>
 			</q-card-actions>
 		</q-card>
@@ -30,8 +30,10 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { QDialog } from 'quasar'
-import axiosRequest from '@/resource/axios'
-import { HttpException } from '@/utils/http-exception'
+import { useProdutoStore } from '@/store/produto.store'
+
+const $produtoStore = useProdutoStore()
+
 export default defineComponent({
 	name: 'DialogAdicionarProduto-componente',
 	components: {},
@@ -46,37 +48,23 @@ export default defineComponent({
 	},
 	methods: {
 		async criarProduto() {
-			await axiosRequest
-				.post('/products', {
-					name: this.name,
-					description: this.description,
-					price: this.price,
-					quantity: this.quantity,
-					barCode: this.barCode,
-				})
-				.then(() => {
-					this.$q.notify({
-						color: 'positive',
-						message: 'Produto adicionado com sucesso!',
-					})
-					this.name = ''
-					this.description = ''
-					this.price = 0
-					this.quantity = 0
-					this.barCode = ''
-				})
-				.catch((error) => {
-					HttpException(error)
-				})
-		},
+			await $produtoStore.createProduto({
+				name: this.name,
+				description: this.description,
+				price: this.price,
+				quantity: this.quantity,
+				barCode: this.barCode,
+			})
 
-		cancel() {
-			this.$emit('cancel')
-			window.location.reload()
-		},
-
-		show() {
-			;(this.$refs.dialog as QDialog).show()
+			this.$q.notify({
+				color: 'positive',
+				message: 'Produto adicionado com sucesso!',
+			})
+			this.name = ''
+			this.description = ''
+			this.price = 0
+			this.quantity = 0
+			this.barCode = ''
 		},
 		hide() {
 			;(this.$refs.dialog as QDialog).hide()

@@ -17,37 +17,24 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { QDialog } from 'quasar'
-import axiosRequest from '@/resource/axios'
-import { IProduto } from '../interfaces/produto.interface'
-import { HttpException } from '@/utils/http-exception'
+import { useProdutoStore } from '@/store/produto.store'
+import { Produto } from '@/types'
+
+const $produtoStore = useProdutoStore()
+
 export default defineComponent({
 	name: 'DialogDeletarProduto-componente',
 	props: {
 		produto: {
-			type: Object as () => IProduto,
+			type: Object as () => Produto,
 			required: true,
 		},
 	},
 	methods: {
 		async deletarProduto() {
-			axiosRequest
-				.delete(`/products/${this.produto.id}`)
-				.then(() => {
-					this.$q.notify({
-						color: 'negative',
-						message: 'Produto deletado com sucesso!',
-					})
-					setTimeout(() => {
-						window.location.reload()
-					}, 500)
-				})
-				.catch((error) => {
-					HttpException(error)
-				})
-		},
-
-		show() {
-			;(this.$refs.dialog as QDialog).show()
+			await $produtoStore.deleteProduto(this.produto.id)
+			this.$emit('ok')
+			this.hide()
 		},
 		hide() {
 			;(this.$refs.dialog as QDialog).hide()
