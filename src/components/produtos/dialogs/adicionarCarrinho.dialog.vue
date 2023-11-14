@@ -21,7 +21,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { QDialog } from 'quasar'
-import * as DTO from '@/components/produtos/interfaces'
+import { Produto } from '@/types'
 export default defineComponent({
 	name: 'DialogAdicionarProdutoCarrinho-componente',
 	data() {
@@ -31,7 +31,7 @@ export default defineComponent({
 	},
 	props: {
 		produto: {
-			type: Object as () => DTO.IProduto,
+			type: Object as () => Produto,
 			required: true,
 		},
 	},
@@ -39,10 +39,32 @@ export default defineComponent({
 		async adicionarProduto() {
 			const storage = localStorage.getItem('pratas:carrinho')
 			const stored = storage && JSON.parse(storage)
-			stored.carrinho.push({
-				...this.produto,
-				quantity: this.quantity,
-			})
+			if (stored.carrinho.length) {
+				const productExist = stored.carrinho.filter((item: Produto) => item.id === this.produto.id)
+				if (productExist.length) {
+					const index = stored.carrinho.findIndex((item: Produto) => item.id === this.produto.id)
+					stored.carrinho[index].totalQuantity += this.quantity
+					stored.carrinho[index].totalPrice = stored.carrinho[index].totalQuantity * this.produto.price
+				} else {
+					stored.carrinho.push({
+						totalPrice: Number((this.produto.price * this.quantity).toFixed(2)),
+						totalQuantity: this.quantity,
+						id: this.produto.id,
+						description: this.produto.description,
+						quantity: this.produto.quantity,
+						price: this.produto.price,
+					})
+				}
+			} else {
+				stored.carrinho.push({
+					totalPrice: Number((this.produto.price * this.quantity).toFixed(2)),
+					totalQuantity: this.quantity,
+					id: this.produto.id,
+					description: this.produto.description,
+					price: this.produto.price,
+					quantity: this.produto.quantity,
+				})
+			}
 			localStorage.setItem('pratas:carrinho', JSON.stringify({ carrinho: stored.carrinho }))
 			this.$emit('ok', [this.produto.id, this.quantity])
 			this.hide()

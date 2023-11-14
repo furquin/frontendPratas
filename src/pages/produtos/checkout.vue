@@ -17,7 +17,7 @@
 				<q-space />
 				<q-input dense v-model="filter" style="width: 40%" label="Nome, descrição ou código"> </q-input>
 				<q-btn icon="search_none" @click="filterProducts(filter)" color="info"> Buscar </q-btn>
-				<q-btn class="ml-5" icon="shopping_cart" color="info"> {{ carrinho.length }} </q-btn>
+				<q-btn class="ml-5" icon="shopping_cart" color="info" to="/carrinho"> {{ carrinho.length }}</q-btn>
 			</template>
 			<template v-slot:body-cell-actions="props">
 				<q-tr :props="props">
@@ -37,10 +37,11 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import axiosRequest from '@/resource/axios'
-import * as DTO from '@/components/produtos/interfaces'
 import DialogAdicionarCarrinho from '@/components/produtos/dialogs/adicionarCarrinho.dialog.vue'
-import { HttpException } from '@/utils/http-exception'
+import { Produto, Carrinho } from '@/types'
+import { useProdutoStore } from '@/store/produto.store'
+
+const $produtoStore = useProdutoStore()
 
 export default defineComponent({
 	name: 'Checkout-component',
@@ -92,24 +93,17 @@ export default defineComponent({
 					style: 'width: 5%',
 				},
 			],
-			carrinho: [] as DTO.IProduto[],
-			produtos: [] as DTO.IProduto[],
+			carrinho: [] as Carrinho[],
+			produtos: [] as Produto[],
 		}
 	},
 	methods: {
 		async filterProducts(input: string) {
-			await axiosRequest
-				.get(`/products?filter=${input}`)
-				.then((response) => {
-					this.produtos = response.data
-					this.filter = ''
-				})
-				.catch((error) => {
-					HttpException(error)
-				})
+			await $produtoStore.getProdutos(input)
+			this.produtos = $produtoStore.produtos
 		},
 
-		addCarinho(row: DTO.IProduto) {
+		addCarinho(row: Produto) {
 			this.$q
 				.dialog({
 					component: DialogAdicionarCarrinho,
@@ -119,11 +113,11 @@ export default defineComponent({
 				})
 				.onOk(([produtoId, quantity]) => {
 					this.updateQuantityProduct(produtoId, quantity)
+					this.carrinho = JSON.parse(localStorage.getItem('pratas:carrinho') as string).carrinho
 					this.$q.notify({
 						color: 'positive',
 						message: `Produto ${row.name} adicionado ao carrinho!`,
 					})
-					window.location.reload()
 				})
 		},
 
@@ -134,20 +128,13 @@ export default defineComponent({
 				}
 			})
 		},
-		disableButton(row: DTO.IProduto) {
+		disableButton(row: Produto) {
 			return row.quantity <= 0 ? true : false
 		},
 	},
 	async created() {
-		await axiosRequest
-			.get('/products?filter')
-			.then((response) => {
-				this.produtos = response.data
-			})
-			.catch((error) => {
-				HttpException(error)
-			})
-
+		await $produtoStore.getProdutos()
+		this.produtos = $produtoStore.produtos
 		const carrinho = localStorage.getItem('pratas:carrinho')
 		if (carrinho) {
 			this.carrinho = JSON.parse(carrinho).carrinho
@@ -155,8 +142,8 @@ export default defineComponent({
 			localStorage.setItem('pratas:carrinho', JSON.stringify({ carrinho: [] }))
 		}
 
-		this.carrinho.forEach((produto) => {
-			this.updateQuantityProduct(produto.id, produto.quantity)
+		this.carrinho.forEach((produto: Carrinho) => {
+			this.updateQuantityProduct(produto.id, produto.totalQuantity)
 		})
 	},
 })

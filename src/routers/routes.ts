@@ -25,6 +25,11 @@ const routes: RouteRecordRaw[] = [
 				component: () => import('../pages/produtos/checkout.vue'),
 				name: 'checkout',
 			},
+			{
+				path: 'carrinho',
+				component: () => import('../pages/produtos/carrinho.vue'),
+				name: 'carrinho',
+			},
 		],
 	},
 	{
