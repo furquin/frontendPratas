@@ -79,6 +79,14 @@ export const useProdutoStore = defineStore('product', () => {
 			})
 	}
 
+	async function finishCheckout(data: any): Promise<boolean> {
+		await axiosRequest.post('/products/checkout', data).catch((error) => {
+			HttpException(error)
+		})
+
+		return true
+	}
+
 	return {
 		produtos,
 		produto,
@@ -87,5 +95,6 @@ export const useProdutoStore = defineStore('product', () => {
 		createProduto,
 		updateProduto,
 		deleteProduto,
+		finishCheckout,
 	}
 })

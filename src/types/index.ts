@@ -30,3 +30,8 @@ export type Carrinho = {
 	totalPrice: number
 	totalQuantity: number
 }
+
+export type FormaPagamento = {
+	id: number
+	name: string
+}
